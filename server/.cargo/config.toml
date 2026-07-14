@@ -1,0 +1,5 @@
+[env]
+CUDAHOSTCXX = "/usr/bin/g++-10"
+
+[build]
+rustflags = ["-L", "/usr/lib/x86_64-linux-gnu"]

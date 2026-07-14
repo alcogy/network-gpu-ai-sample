@@ -1,0 +1,13 @@
+# Rust (server/)
+/server/target/
+/server/*.log
+/server/models/
+
+# Python (client/)
+/client/.venv/
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+Thumbs.db
