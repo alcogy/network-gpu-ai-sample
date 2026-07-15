@@ -1,33 +1,5 @@
 """
-Benchmark client comparing Foundry Local (this machine's NPU/GPU/CPU) against
-network-gpu-ai-server (the 1080Ti over LAN).
-
-Usage:
-    python benchmark.py --backend both
-    python benchmark.py --backend network --prompt "..."
-    python benchmark.py --backend foundry --foundry-model mistral-7b-v0.2
-    python benchmark.py --backend both --runs 10 --warmup 2
-
-Notes:
-- network-gpu-ai-server always caps generation at 64 tokens (N_LEN on the server side),
-  so max_tokens=64 is used on the Foundry side too for a fair comparison.
-- The network server's response has no token count, so tokens/sec on that side is an
-  approximation based on whitespace word count. The Foundry side uses the API's
-  usage.completion_tokens, which is exact.
-- The default model is Mistral-7B-Instruct on both sides for a fair comparison
-  (network side = v0.3, Q4_K_M quantized GGUF; Foundry side = v0.2, ONNX). The version
-  mismatch is because Foundry Local's catalog only has v0.2, not v0.3 - this is the
-  closest match at the same 7B size and model family.
-- The GPU variant of mistral-7b-v0.2
-  (`mistralai-Mistral-7B-Instruct-v0-2-generic-gpu`) only shows up in the catalog
-  after execution providers have been registered via download_and_register_eps().
-  Calling catalog.get_model() before that only shows generic-cpu, which looks like
-  the model has no GPU support even though it does. This script registers EPs first,
-  so it correctly picks up the GPU variant.
-- Both backends use greedy decoding (temperature=0 / the network server's dist+greedy
-  sampler chain) for a fixed prompt, so token count is identical across repeated runs;
-  only wall-clock time varies run to run. --runs/--warmup exist to average out that
-  timing noise, not to sample different outputs.
+Benchmark client comparing Foundry Local (this machine's NPU/GPU/CPU) against network-gpu-ai-server (the 1080Ti over LAN).
 """
 import argparse
 import json
